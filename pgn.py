@@ -54,7 +54,7 @@ class PGN:
         (n/a)
     """
     def create_pgn(self, pgn_data):
-        self.pgn_dict["moves"] = pgn_data[1]
+        self.pgn_dict["Moves"] = pgn_data[1]
         pgn_metadata = pgn_data[0].split('\n')
         for line in pgn_metadata:
             line = line.replace('[', '').replace(']', '').split(' ')
