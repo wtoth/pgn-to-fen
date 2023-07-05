@@ -6,17 +6,14 @@ def import_from_pgn_file(pgn_file):
         pgn_file (str): The pgn file to import from.
 
     Returns:
-        (list): A list of games.
+        (list of lists): A list of games separated into [metadata, pgn moves].
     """
     games = []
     with open(pgn_file, 'r') as f:
-        game = ''
-        for line in f:
-            if line.startswith('['):
-                continue
-            elif line == '\n':
-                games.append(game)
-                game = ''
-            else:
-                game += line
+        game = f.read()
+        game = game.split('\n\n')
+        i = 0
+        while i < len(game)-1:
+            games.append([game[i], game[i+1]])
+            i += 2
     return games
