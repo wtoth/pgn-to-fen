@@ -1,8 +1,11 @@
+import uuid
+
 class PGN:
     def __init__(self, pgn_file):
         self.create_pgn(pgn_file)
 
-    pgn_dict = {
+    game_id = uuid.uuid1()
+    metadata = {
         "Event": "",
         "Site": "",
         "Date": "",
@@ -42,8 +45,8 @@ class PGN:
         "PlyCount": "",
         "TimeControl": "",
         "Termination": "",
-        "Moves": []
     }
+    moves = []
 
     """Loads pgn data into the pgn object.
 
@@ -54,9 +57,9 @@ class PGN:
         (n/a)
     """
     def create_pgn(self, pgn_data):
-        self.pgn_dict["Moves"] = pgn_data[1]
-        pgn_metadata = pgn_data[0].split('\n')
-        for line in pgn_metadata:
+        self.moves = pgn_data[1]
+        self.metadata = pgn_data[0].split('\n')
+        for line in self.metadata:
             line = line.replace('[', '').replace(']', '').split(' ')
-            if line[0] in self.pgn_dict.keys():
+            if line[0] in self.metadata.keys():
                 self.pgn_dict[line[0]] = ' '.join(line[1:])

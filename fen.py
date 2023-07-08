@@ -1,11 +1,14 @@
 from generate_fen import generate_next_move
 
 class FEN:
-    def __init__(self, fen_file):
-        self.create_fen(fen_file)
+    def __init__(self, pgn):
+        self.create_fen(pgn)
 
-    metadata = []
+    metadata = {}
     game = []
 
-def create_fen(data):
-    pass
+    """Creates the FEN object from the pgn object."""
+    def create_fen(self, pgn):
+        self.metadata = pgn.metadata
+        self.game = pgn.moves #placeholder - need to generate fen from pgn
+        
