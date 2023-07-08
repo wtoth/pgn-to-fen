@@ -1,8 +1,16 @@
 import re
 
 
-def generate_first_position(next_move, turn):
-    fen = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]
+def generate_first_position(next_move):
+    position = [["r", "n", "b", "q", "k", "b", "n", "r"],
+                ["p", "p", "p", "p", "p", "p", "p", "p"],
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                ["P", "P", "P", "P", "P", "P", "P", "P"],
+                ["R", "N", "B", "Q", "K", "B", "N", "R"]]
+
     return [position, next_move]
 
 
@@ -32,6 +40,7 @@ def generate_next_move(previous_position, next_move, turn):
 def pgn_format_parse(pgn_moves):
     moves = []
     split_by_move = re.split('\d+(\.) ', pgn_moves)
+    split_by_move = re.sub('[^0-9a-zA-Z]+', split_by_move)
     for move in split_by_move:
         move = move.split(' ')
         if len(move) == 1:
@@ -40,3 +49,21 @@ def pgn_format_parse(pgn_moves):
             moves.append([move[0], "w"])
             moves.append([move[1], "b"])
     return moves
+
+"""Takes in the algebraic notation of a move and returns its current and new position.
+
+    Args:
+        alg_notation (string): string containing the pgn moves
+        current_position (list[list[]]): multidimensional array representation of the current position
+
+    Returns:
+        movement (list[current_position, new_position]): give coordinates of the starting position and the new position
+"""
+def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
+    movement = []
+    if alg_notation == "o-o" or alg_notation == "O-O":
+        return ["castle short"]
+    elif alg_notation == "o-o-o" or alg_notation == "O-O-O":
+        return ["castle long"]
+    else:
+        pass
