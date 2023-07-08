@@ -58,8 +58,8 @@ class PGN:
     """
     def create_pgn(self, pgn_data):
         self.moves = pgn_data[1]
-        self.metadata = pgn_data[0].split('\n')
-        for line in self.metadata:
+        unprocessed_metadata = pgn_data[0].split('\n')
+        for line in unprocessed_metadata:
             line = line.replace('[', '').replace(']', '').split(' ')
             if line[0] in self.metadata.keys():
-                self.pgn_dict[line[0]] = ' '.join(line[1:])
+                self.metadata[line[0]] = ' '.join(line[1:])
