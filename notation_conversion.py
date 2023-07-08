@@ -33,9 +33,9 @@ def pgn_format_parse(pgn_moves):
 """
 def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     movement = [None,None]
-    if alg_notation == "o-o" or alg_notation == "O-O":
+    if (alg_notation == "o-o") or (alg_notation == "O-O"):
         return ["castle short"]
-    elif alg_notation == "o-o-o" or alg_notation == "O-O-O":
+    elif (alg_notation == "o-o-o") or (alg_notation == "O-O-O"):
         return ["castle long"]
     
     #process each move individually to determine the starting position
@@ -71,13 +71,39 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     elif alg_notation[0] == "N":
         pass
     else:
-        pass
+        if turn == "b":
+            if len(alg_notation) == 2:
+                if alg_notation[1] == 5:
+                    if current_position[5][convert_to_rank_file(alg_notation[0])] == "p":
+                        movement[0] = [convert_to_rank_file(alg_notation[0]), 5]
+                    elif current_position[6][convert_to_rank_file(alg_notation[0])] == "p":
+                        movement[0] = [convert_to_rank_file(alg_notation[0]), 6]
+                else:
+                    movement[0] = [convert_to_rank_file(alg_notation[0]),  convert_to_rank_file(int(alg_notation[1]) + 1)]
+            elif len(alg_notation) == 4:
+                movement[0] = [convert_to_rank_file(alg_notation[0]),  convert_to_rank_file(int(alg_notation[3]) + 1)]
+                movement[1] = [convert_to_rank_file(alg_notation[2]),  convert_to_rank_file(int(alg_notation[3]))]
+        else:
+            if len(alg_notation) == 2:
+                if alg_notation[1] == 4:
+                    if current_position[1][convert_to_rank_file(alg_notation[0])] == "p":
+                        movement[0] = [convert_to_rank_file(alg_notation[0]), 1]
+                    elif current_position[2][convert_to_rank_file(alg_notation[0])] == "p":
+                        movement[0] = [convert_to_rank_file(alg_notation[0]), 2]
+                else:
+                    movement[0] = [convert_to_rank_file(alg_notation[0]),  convert_to_rank_file(int(alg_notation[1]) - 1)]
+            elif len(alg_notation) == 4:
+                movement[0] = [convert_to_rank_file(alg_notation[0]),  convert_to_rank_file(int(alg_notation[3]) - 1)]
+                movement[1] = [convert_to_rank_file(alg_notation[2]),  convert_to_rank_file(int(alg_notation[3]))]
+
+    return movement
+
 
 #converts algebraic notation down to rank and file notation
 def convert_to_rank_file(position):
     if position.isnumeric():
         return int(position) - 1
-    
+    position = position.lower()
     if position == "a":
         return 0
     elif position == "b":
