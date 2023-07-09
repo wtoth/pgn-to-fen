@@ -100,9 +100,22 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         #case when a rook moves to a square that is not occupied
         else:
             if turn == "b":
-                pass
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0])] == "r":
+                            movement[0] = [i, j]
+                            break
+                        elif current_position[convert_to_rank_file(alg_notation[0])][i] == "r":
+                            movement[0] = [i, j]
+                            break
             else:
-                pass
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0])] == "R":
+                            movement[0] = [i, j]
+                            break
+                        elif current_position[convert_to_rank_file(alg_notation[0])][i] == "R":
+                            movement[0] = [i, j]
+                            break
+            movement[1] = [convert_to_rank_file(alg_notation[1]), convert_to_rank_file(alg_notation[2])]
 
     elif alg_notation[0] == "B":
         pass
