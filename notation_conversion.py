@@ -65,7 +65,45 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
 
         movement[1] = [alg_notation[2], alg_notation[3]]
     elif alg_notation[0] == "R":
-        pass
+        #case for when there are two rooks that can move to the same square
+        if (len(alg_notation) == 4) and ("x" not in alg_notation):
+            if turn == "b":
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0])] == "r":
+                            movement[0] = [i, j]
+                            break
+            else:
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0])] == "R":
+                            movement[0] = [i, j]
+                            break
+            movement[1] = [convert_to_rank_file(alg_notation[2]), convert_to_rank_file(alg_notation[3])]
+        #case when a rook captures a piece
+        elif (len(alg_notation) == 4) and ("x" in alg_notation):
+            if turn == "b":
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0])] == "r":
+                            movement[0] = [i, j]
+                            break
+                        elif current_position[convert_to_rank_file(alg_notation[0])][i] == "r":
+                            movement[0] = [i, j]
+                            break
+            else:
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0])] == "R":
+                            movement[0] = [i, j]
+                            break
+                        elif current_position[convert_to_rank_file(alg_notation[0])][i] == "R":
+                            movement[0] = [i, j]
+                            break
+            movement[1] = [convert_to_rank_file(alg_notation[2]), convert_to_rank_file(alg_notation[3])]
+        #case when a rook moves to a square that is not occupied
+        else:
+            if turn == "b":
+                pass
+            else:
+                pass
+
     elif alg_notation[0] == "B":
         pass
     elif alg_notation[0] == "N":
