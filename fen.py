@@ -1,4 +1,5 @@
-from generate_fen import generate_next_move, pgn_format_parse, generate_first_position, generate_fen_from_rank_file
+from generate_fen import generate_next_move, generate_first_position, generate_fen_from_rank_file
+from notation_conversion import pgn_format_parse
 
 class FEN:
     def __init__(self, pgn):
@@ -14,11 +15,11 @@ class FEN:
         self.game_id = pgn.game_id
         parsed_pgn = pgn_format_parse(pgn.moves)
         first_move = True
-        for move in parsed_pgn:
+        for i in range(len(parsed_pgn)-1):
             if first_move:
-                self.rank_file.append(generate_first_position(move[0]))
+                self.rank_file.append(generate_first_position(parsed_pgn[i]))
                 self.game.append(generate_fen_from_rank_file(self.rank_file[-1]))
                 first_move = False
             else:
-                self.rank_file.append(generate_next_move(self.rank_file[-1][0], move[0], move[1]))
-                self.game.append(generate_fen_from_rank_file(self.rank_file[-1]))
+                self.rank_file.append(generate_next_move(self.rank_file[-1][0], parsed_pgn[i], parsed_pgn[i+1]))
+                self.game.append([generate_fen_from_rank_file(self.rank_file[-1]), parsed_pgn[i+1]])

@@ -51,4 +51,19 @@ def generate_next_move(previous_position, next_move, turn):
         fen (string): fen representation of the updated position
 """
 def generate_fen_from_rank_file(rank_file_notation):
-    pass
+    fen = ""
+    for i in range(len(rank_file_notation)):
+        for j in range(len(rank_file_notation[i])):
+            file_notation = ""
+            blank_count = 0
+            if rank_file_notation[i][j] == " ":
+                blank_count += 1
+            else:
+                if blank_count != 0:
+                    file_notation += (str(blank_count) + rank_file_notation[i][j])
+                else:
+                    file_notation += rank_file_notation[i][j]
+            if blank_count == 8:
+                file_notation = "8"
+        fen += (file_notation + "/")
+    return fen
