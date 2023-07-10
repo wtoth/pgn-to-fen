@@ -303,7 +303,7 @@ def possible_knight_moves(destination):
             possible_moves.append([destination_file + 2, destination_rank - 1])
     elif destination_rank + 2 <= 7:
         if destination_file + 1 <= 7:
-            possible_moves.append([destination_rank + 2, destination_file + 1])
+            possible_moves.append([destination_file + 1, destination_rank + 2])
         if destination_file - 1 >= 0:
-            possible_moves.append([destination_rank + 2, destination_file - 1])
+            possible_moves.append([destination_file - 1, destination_rank + 2])
     return possible_moves
