@@ -164,51 +164,80 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     elif alg_notation[0] == "N":
         #standard knight movement where there is only one knight that can move to the square
         if (len(alg_notation) == 3):
-            pass
+            possible_moves = possible_knight_moves(alg_notation[-2:])
+            if turn == "b":
+                    for move in possible_moves:
+                        if current_position[move[0]][move[1]] == "n":
+                            movement[0] = [move[0], move[1]]
+                            break
+                        elif current_position[move[0]][move[1]] == "n":
+                            movement[0] = [move[0], move[1]]
+                            break
+            else:
+                for move in possible_moves:
+                    if current_position[move[0]][move[1]] == "N":
+                        movement[0] = [move[0], move[1]]
+                        break
+                    elif current_position[move[0]][move[1]] == "N":
+                        movement[0] = [move[0], move[1]]
+                        break
         elif (len(alg_notation) == 4):
             #case where a knight captures a piece and only that knight can capture said piece
             if (alg_notation[1] == "x") or (alg_notation[1] == "X"):
-                possible_moves = possible_knight_moves(alg_notation[-2])
+                possible_moves = possible_knight_moves(alg_notation[-2:])
                 if turn == "b":
-                    for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[2])] == "n":
-                            movement[0] = [i, j]
+                    for move in possible_moves:
+                        if current_position[move[0]][move[1]] == "n":
+                            movement[0] = [move[0], move[1]]
                             break
-                        elif current_position[convert_to_rank_file(alg_notation[2])][i] == "n":
-                            movement[0] = [i, j]
+                        elif current_position[move[0]][move[1]] == "n":
+                            movement[0] = [move[0], move[1]]
                             break
                 else:
-                    for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[2])] == "N":
-                            movement[0] = [i, j]
+                    for move in possible_moves:
+                        if current_position[move[0]][move[1]] == "N":
+                            movement[0] = [move[0], move[1]]
                             break
-                        elif current_position[convert_to_rank_file(alg_notation[2])][i] == "N":
-                            movement[0] = [i, j]
+                        elif current_position[move[0]][move[1]] == "N":
+                            movement[0] = [move[0], move[1]]
                             break
             #case where there are two knights that can move to the same square
             else:
-                if turn == "b":
-                    for i in range(len(current_position)):
-                        if current_position[convert_to_rank_file(alg_notation[1])][i] == "n":
-                            movement[0] = [i, j]
-                            break
+                if alg_notation[1].isalpha():
+                    if turn == "b":
+                        for i in range(len(current_position)):
+                            if current_position[convert_to_rank_file(alg_notation[1])][i] == "n":
+                                movement[0] = [convert_to_rank_file(alg_notation[1]), i]
+                                break
+                    else:
+                        for i in range(len(current_position)):
+                            if current_position[convert_to_rank_file(alg_notation[1])][i] == "N":
+                                movement[0] = [convert_to_rank_file(alg_notation[1]), i]
+                                break
                 else:
-                    for i in range(len(current_position)):
-                        if current_position[convert_to_rank_file(alg_notation[1])][i] == "N":
-                            movement[0] = [convert_to_rank_file(alg_notation[1]), i]
-                            break
+                    if turn == "b":
+                        for i in range(len(current_position)):
+                            if current_position[convert_to_rank_file(alg_notation[1])][i] == "n":
+                                movement[0] = [convert_to_rank_file(alg_notation[1]), i]
+                                break
+                    else:
+                        for i in range(len(current_position)):
+                            if current_position[convert_to_rank_file(alg_notation[1])][i] == "N":
+                                movement[0] = [convert_to_rank_file(alg_notation[1]), i]
+                                break
+
         elif (len(alg_notation) == 5):
             #case where two knights that can capture the same piece
             if alg_notation[1].isalpha():
                 if turn == "b":
                     for i in range(len(current_position)):
                         if current_position[i][convert_to_rank_file(alg_notation[1])] == "n":
-                            movement[0] = [i, convert_to_rank_file(alg_notation[1])] #suspect!!!
+                            movement[0] = [i, convert_to_rank_file(alg_notation[1])]
                             break
                 else:
                     for i in range(len(current_position)):
                         if current_position[i][convert_to_rank_file(alg_notation[1])] == "N":
-                            movement[0] = [i, convert_to_rank_file(alg_notation[1])] #suspect!!!
+                            movement[0] = [i, convert_to_rank_file(alg_notation[1])]
                             break
             #super special case where there are two knights on the same file that can move to the same square
             else:
