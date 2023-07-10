@@ -1,3 +1,5 @@
+from notation_conversion import algebraic_notation_to_rank_file
+
 
 """Initializes the .
 
@@ -32,8 +34,13 @@ def generate_first_position(next_move):
         updated_position (string): fen representation of the updated position
 """
 def generate_next_move(previous_position, next_move, turn):
-    updated_position = ""
-    return updated_position
+    movements = algebraic_notation_to_rank_file(next_move, previous_position, turn)
+    piece_to_move = movements[0]
+    destination = movements[1]
+    piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
+    previous_position[piece_to_move[0]][piece_to_move[1]] == ""
+    previous_position[destination[0]][destination[1]] == piece_to_move_notation
+    return previous_position
 
 """Takes in a rank file notation of a board and generates the fen representation.
 
