@@ -118,7 +118,47 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
             movement[1] = [convert_to_rank_file(alg_notation[1]), convert_to_rank_file(alg_notation[2])]
 
     elif alg_notation[0] == "B":
-        pass
+        #determine whether distination square is black or white
+        #find bishop that can move to that square
+        square_type = white_or_black_square(alg_notation[2:])
+        board_file = 0
+        if turn == "b":
+            while board_file < 8:
+                if square_type == "white":
+                    board_rank = 1
+                    while board_rank < 8:
+                        if current_position[board_rank][board_file] == "b":
+                            movement[0] = [board_rank, board_file]
+                            break
+                        board_rank += 2
+                else:
+                    board_rank = 0
+                    while board_rank < 8:
+                        if current_position[board_rank][board_file] == "b":
+                            movement[0] = [board_rank, board_file]
+                            break
+                        board_rank += 2
+                board_file += 1
+        else:
+            while board_file < 8:
+                if square_type == "white":
+                    board_rank = 1
+                    while board_rank < 8:
+                        if current_position[board_rank][board_file] == "B":
+                            movement[0] = [board_rank, board_file]
+                            break
+                        board_rank += 2
+                else:
+                    board_rank = 0
+                    while board_rank < 8:
+                        if current_position[board_rank][board_file] == "B":
+                            movement[0] = [board_rank, board_file]
+                            break
+                        board_rank += 2
+                board_file += 1
+        movement[1] = [convert_to_rank_file(alg_notation[-2]), convert_to_rank_file(alg_notation[-1])]
+
+
     elif alg_notation[0] == "N":
         pass
     else:
@@ -171,3 +211,16 @@ def convert_to_rank_file(position):
         return 6
     elif position == "h":
         return 7
+    
+#determines whether a square is black or white
+def white_or_black_square(position):
+    if position[0] == "a" or position[0] == "c" or position[0] == "e" or position[0] == "g":
+        if position[1] == "1" or position[1] == "3" or position[1] == "5" or position[1] == "7":
+            return "black"
+        else:
+            return "white"
+    else:
+        if position[1] == "1" or position[1] == "3" or position[1] == "5" or position[1] == "7":
+            return "white"
+        else:
+            return "black"
