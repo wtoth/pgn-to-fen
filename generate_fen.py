@@ -12,14 +12,14 @@ from notation_conversion import algebraic_notation_to_rank_file
         updated_position (string): fen representation of the updated position
 """
 def generate_first_position(next_move):
-    position = [["r", "n", "b", "q", "k", "b", "n", "r"],
-                ["p", "p", "p", "p", "p", "p", "p", "p"],
-                [" ", " ", " ", " ", " ", " ", " ", " "],
-                [" ", " ", " ", " ", " ", " ", " ", " "],
-                [" ", " ", " ", " ", " ", " ", " ", " "],
-                [" ", " ", " ", " ", " ", " ", " ", " "],
+    position = [["R", "N", "B", "Q", "K", "B", "N", "R"],
                 ["P", "P", "P", "P", "P", "P", "P", "P"],
-                ["R", "N", "B", "Q", "K", "B", "N", "R"]]
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                [" ", " ", " ", " ", " ", " ", " ", " "],
+                ["p", "p", "p", "p", "p", "p", "p", "p"],
+                ["r", "n", "b", "q", "k", "b", "n", "r"]]
 
     return [position, next_move]
 
@@ -33,21 +33,24 @@ def generate_first_position(next_move):
     Returns:
         updated_position (string): fen representation of the updated position
 """
-def generate_next_move(previous_position, next_move, turn):
-    movements = algebraic_notation_to_rank_file(next_move, previous_position, turn)
+def generate_next_move(previous_position, next_move):
+    movements = algebraic_notation_to_rank_file(next_move, previous_position, next_move[1])
     piece_to_move = movements[0]
     destination = movements[1]
+    print("piece_to_move")
     print(piece_to_move)
+    print("destination")
     print(destination)
     print("previous_position")
     print(previous_position)
-    piece_to_move_notation = previous_position[0][piece_to_move[0]][piece_to_move[1]]
+    piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
     print(piece_to_move_notation)
-    previous_position[0][piece_to_move[0]][piece_to_move[1]] = ""
-    previous_position[0][destination[0]][destination[1]] = piece_to_move_notation
+    print(previous_position[piece_to_move[0]][piece_to_move[1]])
+    previous_position[piece_to_move[0]][piece_to_move[1]] = " "
+    previous_position[destination[0]][destination[1]] = piece_to_move_notation
     print("updated_position")
     print(previous_position)
-    return previous_position
+    return [previous_position, next_move]
 
 """Takes in a rank file notation of a board and generates the fen representation.
 
