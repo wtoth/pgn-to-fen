@@ -287,7 +287,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                     elif current_position[6][convert_to_rank_file(alg_notation[0][0])] == "p":
                         movement[0] = [6, convert_to_rank_file(alg_notation[0][0])]
                 else:
-                    movement[0] = [convert_to_rank_file(alg_notation[0][0]),  convert_to_rank_file(int(alg_notation[0][1]) + 1)]
+                    movement[0] = [convert_to_rank_file(int(alg_notation[0][1]) + 1), convert_to_rank_file(alg_notation[0][0])]
             elif len(alg_notation[0]) == 4:
                 movement[0] = [convert_to_rank_file(int(alg_notation[0][3]) + 1), convert_to_rank_file(alg_notation[0][0])]
             movement[1] = [convert_to_rank_file(int(alg_notation[0][-1])), convert_to_rank_file(alg_notation[0][-2])]
