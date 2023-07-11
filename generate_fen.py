@@ -37,6 +37,7 @@ def generate_next_move(previous_position, next_move, turn):
     movements = algebraic_notation_to_rank_file(next_move, previous_position, turn)
     piece_to_move = movements[0]
     destination = movements[1]
+    print(piece_to_move)
     piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
     previous_position[piece_to_move[0]][piece_to_move[1]] == ""
     previous_position[destination[0]][destination[1]] == piece_to_move_notation
@@ -52,17 +53,20 @@ def generate_next_move(previous_position, next_move, turn):
 """
 def generate_fen_from_rank_file(rank_file_notation):
     fen = ""
-    for i in range(len(rank_file_notation)):
-        for j in range(len(rank_file_notation[i])):
+    #print(rank_file_notation[0])
+    for i in range(len(rank_file_notation[0])):
+        #print(rank_file_notation[0][i])
+        for j in range(len(rank_file_notation[0][i])):
             file_notation = ""
             blank_count = 0
-            if rank_file_notation[i][j] == " ":
+            if rank_file_notation[0][i][j] == " ":
                 blank_count += 1
             else:
                 if blank_count != 0:
-                    file_notation += (str(blank_count) + rank_file_notation[i][j])
+                    file_notation += (str(blank_count) + rank_file_notation[0][i][j])
                 else:
-                    file_notation += rank_file_notation[i][j]
+                    #print(rank_file_notation[0][i][j])
+                    file_notation += rank_file_notation[0][i][j]
             if blank_count == 8:
                 file_notation = "8"
         fen += (file_notation + "/")

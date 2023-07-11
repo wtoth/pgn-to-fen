@@ -13,9 +13,12 @@ class FEN:
     def create_fen(self, pgn):
         self.metadata = pgn.metadata
         self.game_id = pgn.game_id
+        #print(pgn.moves)
         parsed_pgn = pgn_format_parse(pgn.moves)
+        #print(parsed_pgn)
         first_move = True
         for i in range(len(parsed_pgn)-1):
+            
             if first_move:
                 self.rank_file.append(generate_first_position(parsed_pgn[i]))
                 self.game.append(generate_fen_from_rank_file(self.rank_file[-1]))
