@@ -44,8 +44,13 @@ def pgn_format_parse(pgn_moves):
         movement (list[current_position, new_position]): give coordinates of the starting position and the new position
 """
 def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
+    #print(alg_notation)
+    #print(current_position)
+    #print("flag")
+    #print(turn)
+    #movement of form [current_position[rank, file], new_position[rank, file]]
     movement = [None,None]
-    current_position = current_position[0]
+    #current_position = current_position[0]
     if (alg_notation[0] == "o-o") or (alg_notation[0] == "O-O"):
         return ["castle short"]
     elif (alg_notation[0] == "o-o-o") or (alg_notation[0] == "O-O-O"):
@@ -272,32 +277,34 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         movement[1] = [convert_to_rank_file(alg_notation[0][-2]), convert_to_rank_file(alg_notation[0][-1])]
     #pawn movement
     else:
+        print(alg_notation)
         if turn == "b":
             if len(alg_notation[0]) == 2:
-                if alg_notation[0][1] == 5:
+                #black checking for double first move
+                if alg_notation[0][1] == "5":
                     if current_position[5][convert_to_rank_file(alg_notation[0][0])] == "p":
-                        movement[0] = [convert_to_rank_file(alg_notation[0][0]), 5]
+                        movement[0] = [5, convert_to_rank_file(alg_notation[0][0])]
                     elif current_position[6][convert_to_rank_file(alg_notation[0][0])] == "p":
-                        movement[0] = [convert_to_rank_file(alg_notation[0][0]), 6]
+                        movement[0] = [6, convert_to_rank_file(alg_notation[0][0])]
                 else:
                     movement[0] = [convert_to_rank_file(alg_notation[0][0]),  convert_to_rank_file(int(alg_notation[0][1]) + 1)]
             elif len(alg_notation[0]) == 4:
-                movement[0] = [convert_to_rank_file(alg_notation[0][0]),  convert_to_rank_file(int(alg_notation[0][3]) + 1)]
-                movement[1] = [convert_to_rank_file(alg_notation[0][2]),  convert_to_rank_file(int(alg_notation[0][3]))]
+                movement[0] = [convert_to_rank_file(int(alg_notation[0][3]) + 1), convert_to_rank_file(alg_notation[0][0])]
+            movement[1] = [convert_to_rank_file(int(alg_notation[0][-1])), convert_to_rank_file(alg_notation[0][-2])]
         else:
             if len(alg_notation[0]) == 2:
-                if alg_notation[0][1] == 4:
-                    if current_position[1][convert_to_rank_file(alg_notation[0][0])] == "p":
-                        movement[0] = [convert_to_rank_file(alg_notation[0][0]), 1]
-                    elif current_position[2][convert_to_rank_file(alg_notation[0][0])] == "p":
-                        movement[0] = [convert_to_rank_file(alg_notation[0][0]), 2]
+                if alg_notation[0][1] == "4":
+                    if current_position[1][convert_to_rank_file(alg_notation[0][0])] == "P":
+                        movement[0] = [1, convert_to_rank_file(alg_notation[0][0])]
+                    elif current_position[2][convert_to_rank_file(alg_notation[0][0])] == "P":
+                        movement[0] = [2, convert_to_rank_file(alg_notation[0][0])]
                 else:
                     print(alg_notation[0][0])
                     print(alg_notation[0][1])
-                    movement[0] = [convert_to_rank_file(alg_notation[0][0]),  convert_to_rank_file(int(alg_notation[0][1]) - 1)]
+                    movement[0] = [convert_to_rank_file(int(alg_notation[0][1]) - 1), convert_to_rank_file(alg_notation[0][0])]
             elif len(alg_notation[0]) == 4:
-                movement[0] = [convert_to_rank_file(alg_notation[0][0]),  convert_to_rank_file(int(alg_notation[0][3]) - 1)]
-                movement[1] = [convert_to_rank_file(alg_notation[0][2]),  convert_to_rank_file(int(alg_notation[0][3]))]
+                movement[0] = [convert_to_rank_file(int(alg_notation[0][3]) - 1), convert_to_rank_file(alg_notation[0][0])]
+            movement[1] = [convert_to_rank_file(int(alg_notation[0][-1])), convert_to_rank_file(alg_notation[0][-2])]
 
     return movement
 
