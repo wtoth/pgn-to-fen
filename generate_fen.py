@@ -38,9 +38,15 @@ def generate_next_move(previous_position, next_move, turn):
     piece_to_move = movements[0]
     destination = movements[1]
     print(piece_to_move)
-    piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
-    previous_position[piece_to_move[0]][piece_to_move[1]] == ""
-    previous_position[destination[0]][destination[1]] == piece_to_move_notation
+    print(destination)
+    print("previous_position")
+    print(previous_position)
+    piece_to_move_notation = previous_position[0][piece_to_move[0]][piece_to_move[1]]
+    print(piece_to_move_notation)
+    previous_position[0][piece_to_move[0]][piece_to_move[1]] = ""
+    previous_position[0][destination[0]][destination[1]] = piece_to_move_notation
+    print("updated_position")
+    print(previous_position)
     return previous_position
 
 """Takes in a rank file notation of a board and generates the fen representation.

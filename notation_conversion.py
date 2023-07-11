@@ -30,7 +30,7 @@ def pgn_format_parse(pgn_moves):
             moves.append([split_by_move[i], "w"])
             moves.append([split_by_move[i+1], "b"])
         i += 2
-    print(moves)
+    #print(moves)
     return moves
 
 
@@ -45,6 +45,7 @@ def pgn_format_parse(pgn_moves):
 """
 def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     movement = [None,None]
+    current_position = current_position[0]
     if (alg_notation[0] == "o-o") or (alg_notation[0] == "O-O"):
         return ["castle short"]
     elif (alg_notation[0] == "o-o-o") or (alg_notation[0] == "O-O-O"):
@@ -53,7 +54,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     #process each move individually to determine the starting position
     #black is lowercase white is uppercase
     #king movement
-    print(alg_notation[0])
+    #print(alg_notation[0])
     if alg_notation[0][0] == "K":
         if turn == "b":
             for i in range(len(current_position)):
@@ -188,6 +189,8 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                             break
             else:
                 for move in possible_moves:
+                    print(move)
+                    print(current_position)
                     if current_position[move[0]][move[1]] == "N":
                         movement[0] = [move[0], move[1]]
                         break
