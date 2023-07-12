@@ -11,17 +11,6 @@ import re
 def pgn_format_parse(pgn_moves):
     moves = []
     split_by_move = re.sub('\d+(\.) ', "", pgn_moves).split()
-    #print(split_by_move)
-    #for move in split_by_move:
-    #    move = re.split('[^0-9a-zA-Z]+', move)
-    #print(split_by_move)
-    #for move in split_by_move:
-    #    move = move.split(' ')
-    #    if len(move) == 1:
-    #        moves.append([move[0], "w"])
-    #    else:
-    #        moves.append([move[0], "w"])
-    #        moves.append([move[1], "b"])
     i = 0
     while i < len(split_by_move):
         if i+2 >= len(split_by_move):
@@ -30,7 +19,6 @@ def pgn_format_parse(pgn_moves):
             moves.append([split_by_move[i], "w"])
             moves.append([split_by_move[i+1], "b"])
         i += 2
-    #print(moves)
     return moves
 
 
@@ -142,7 +130,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     elif alg_notation[0][0] == "B":
         #determine whether distination square is black or white
         #find bishop that can move to that square
-        square_type = white_or_black_square(alg_notation[0][2:])
+        square_type = white_or_black_square(alg_notation[0][-2:])
         board_file = 0
         if turn == "b":
             while board_file < 8:
@@ -277,7 +265,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         movement[1] = [convert_to_rank_file(alg_notation[0][-2]), convert_to_rank_file(alg_notation[0][-1])]
     #pawn movement
     else:
-        print(alg_notation)
         if turn == "b":
             if len(alg_notation[0]) == 2:
                 #black checking for double first move
@@ -299,8 +286,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                     elif current_position[2][convert_to_rank_file(alg_notation[0][0])] == "P":
                         movement[0] = [2, convert_to_rank_file(alg_notation[0][0])]
                 else:
-                    print(alg_notation[0][0])
-                    print(alg_notation[0][1])
                     movement[0] = [convert_to_rank_file(int(alg_notation[0][1]) - 1), convert_to_rank_file(alg_notation[0][0])]
             elif len(alg_notation[0]) == 4:
                 movement[0] = [convert_to_rank_file(int(alg_notation[0][3]) - 1), convert_to_rank_file(alg_notation[0][0])]
@@ -333,6 +318,7 @@ def convert_to_rank_file(position):
     
 #determines whether a square is black or white
 def white_or_black_square(position):
+    print(position)
     if position[0] == "a" or position[0] == "c" or position[0] == "e" or position[0] == "g":
         if position[1] == "1" or position[1] == "3" or position[1] == "5" or position[1] == "7":
             return "black"
@@ -349,14 +335,28 @@ def possible_knight_moves(destination):
     possible_moves = []
     destination_file= convert_to_rank_file(destination[0])
     destination_rank = convert_to_rank_file(destination[1])
+    #knight moves forward 2 and left or right 1
     if destination_file + 2 <= 7:
         if (destination_rank + 1) <= 7:
             possible_moves.append([destination_file + 2, destination_rank + 1])
         if (destination_rank - 1) >= 0:
             possible_moves.append([destination_file + 2, destination_rank - 1])
-    elif (destination_rank + 2) <= 7:
+    #knight moves backward 2 and left or right 1
+    if (destination_rank - 2) >= 0:
         if (destination_file + 1) <= 7:
-            possible_moves.append([destination_file + 1, destination_rank + 2])
+            possible_moves.append([destination_file - 2, destination_rank + 1])
         if (destination_file - 1) >= 0:
+            possible_moves.append([destination_file - 2, destination_rank - 1])
+    #knight moves left 2 and forward or backward 1
+    if (destination_file - 2) >= 0:
+        if (destination_rank + 1) <= 7:
+            possible_moves.append([destination_file + 1, destination_rank - 2])
+        if (destination_rank - 1) >= 0:
+            possible_moves.append([destination_file - 1, destination_rank - 2])
+    #knight moves right 2 and forward or backward 1
+    if (destination_file + 2) <= 7:
+        if (destination_rank + 1) <= 7:
+            possible_moves.append([destination_file + 1, destination_rank + 2])
+        if (destination_rank - 1) >= 0:
             possible_moves.append([destination_file - 1, destination_rank + 2])
     return possible_moves
