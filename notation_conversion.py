@@ -32,17 +32,18 @@ def pgn_format_parse(pgn_moves):
         movement (list[current_position, new_position]): give coordinates of the starting position and the new position
 """
 def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
-    #print(alg_notation)
+    
+    print(alg_notation)
     #print(current_position)
-    #print("flag")
+    print("flag")
     #print(turn)
     #movement of form [current_position[rank, file], new_position[rank, file]]
     movement = [None,None]
     #current_position = current_position[0]
     if (alg_notation[0] == "o-o") or (alg_notation[0] == "O-O"):
-        return ["castle short"]
+        return ["O-O", turn]
     elif (alg_notation[0] == "o-o-o") or (alg_notation[0] == "O-O-O"):
-        return ["castle long"]
+        return ["O-O-O", turn]
     
     #process each move individually to determine the starting position
     #black is lowercase white is uppercase
@@ -75,57 +76,58 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         movement[1] = [alg_notation[0][2], alg_notation[0][3]]
     #Rook Movement
     elif alg_notation[0][0] == "R":
+        print(alg_notation)
         #case for when there are two rooks that can move to the same square
         if (len(alg_notation[0]) == 4) and ("x" not in alg_notation[0]):
             if turn == "b":
                 for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][0])] == "r":
-                            movement[0] = [i, j]
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "r":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                             break
             else:
                 for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][0])] == "R":
-                            movement[0] = [i, j]
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "R":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                             break
-            movement[1] = [convert_to_rank_file(alg_notation[0][2]), convert_to_rank_file(alg_notation[0][3])]
+            movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
         #case when a rook captures a piece
         elif (len(alg_notation[0]) == 4) and ("x" in alg_notation[0]):
             if turn == "b":
                 for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][0])] == "r":
-                            movement[0] = [i, j]
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "r":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                             break
-                        elif current_position[convert_to_rank_file(alg_notation[0][0])][i] == "r":
-                            movement[0] = [i, j]
+                        elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "r":
+                            movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
                             break
             else:
                 for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][0])] == "R":
-                            movement[0] = [i, j]
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "R":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                             break
-                        elif current_position[convert_to_rank_file(alg_notation[0][0])][i] == "R":
-                            movement[0] = [i, j]
+                        elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "R":
+                            movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
                             break
-            movement[1] = [convert_to_rank_file(alg_notation[0][2]), convert_to_rank_file(alg_notation[0][3])]
+            movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
         #case when a rook moves to a square that is not occupied
         else:
             if turn == "b":
                 for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][0])] == "r":
-                            movement[0] = [i, j]
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "r":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                             break
-                        elif current_position[convert_to_rank_file(alg_notation[0][0])][i] == "r":
+                        elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "r":
                             movement[0] = [i, j]
                             break
             else:
                 for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][0])] == "R":
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "R":
                             movement[0] = [i, j]
                             break
-                        elif current_position[convert_to_rank_file(alg_notation[0][0])][i] == "R":
-                            movement[0] = [i, j]
+                        elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "R":
+                            movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
                             break
-            movement[1] = [convert_to_rank_file(alg_notation[0][1]), convert_to_rank_file(alg_notation[0][2])]
+            movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #bishop movement
     elif alg_notation[0][0] == "B":
         #determine whether distination square is black or white
@@ -147,6 +149,10 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                 board_rank += 1
         else:
             while board_rank < 8:
+                if square_type == "white":
+                    board_file = 1
+                else:
+                    board_file = 0
                 while board_file < 8:
                     if current_position[board_rank][board_file] == "B":
                         movement[0] = [board_rank, board_file]
@@ -159,6 +165,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         #standard knight movement where there is only one knight that can move to the square
         if (len(alg_notation[0]) == 3):
             possible_moves = possible_knight_moves(alg_notation[0][-2:])
+            print(possible_moves)
             if turn == "b":
                     for move in possible_moves:
                         if current_position[move[0]][move[1]] == "n":
@@ -169,8 +176,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                             break
             else:
                 for move in possible_moves:
-                    print(move)
-                    print(current_position)
                     if current_position[move[0]][move[1]] == "N":
                         movement[0] = [move[0], move[1]]
                         break
@@ -325,25 +330,25 @@ def possible_knight_moves(destination):
     #knight moves forward 2 and left or right 1
     if destination_file + 2 <= 7:
         if (destination_rank + 1) <= 7:
-            possible_moves.append([destination_file + 2, destination_rank + 1])
+            possible_moves.append([destination_rank + 1, destination_file + 2])
         if (destination_rank - 1) >= 0:
-            possible_moves.append([destination_file + 2, destination_rank - 1])
+            possible_moves.append([destination_rank - 1, destination_file + 2])
     #knight moves backward 2 and left or right 1
     if (destination_rank - 2) >= 0:
         if (destination_file + 1) <= 7:
-            possible_moves.append([destination_file - 2, destination_rank + 1])
+            possible_moves.append([destination_rank + 1, destination_file - 2])
         if (destination_file - 1) >= 0:
-            possible_moves.append([destination_file - 2, destination_rank - 1])
+            possible_moves.append([destination_rank - 1, destination_file - 2])
     #knight moves left 2 and forward or backward 1
     if (destination_file - 2) >= 0:
         if (destination_rank + 1) <= 7:
-            possible_moves.append([destination_file + 1, destination_rank - 2])
+            possible_moves.append([destination_rank - 2, destination_file + 1])
         if (destination_rank - 1) >= 0:
-            possible_moves.append([destination_file - 1, destination_rank - 2])
+            possible_moves.append([destination_rank - 2, destination_file - 1])
     #knight moves right 2 and forward or backward 1
     if (destination_file + 2) <= 7:
         if (destination_rank + 1) <= 7:
-            possible_moves.append([destination_file + 1, destination_rank + 2])
+            possible_moves.append([destination_rank + 2, destination_file + 1])
         if (destination_rank - 1) >= 0:
-            possible_moves.append([destination_file - 1, destination_rank + 2])
+            possible_moves.append([destination_rank + 2,destination_file - 1])
     return possible_moves
