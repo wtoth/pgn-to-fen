@@ -131,41 +131,28 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         #determine whether distination square is black or white
         #find bishop that can move to that square
         square_type = white_or_black_square(alg_notation[0][-2:])
-        board_file = 0
+        
+        board_rank = 0
         if turn == "b":
-            while board_file < 8:
+            while board_rank < 8:
                 if square_type == "white":
-                    board_rank = 1
-                    while board_rank < 8:
-                        if current_position[board_rank][board_file] == "b":
-                            movement[0] = [board_rank, board_file]
-                            break
-                        board_rank += 2
+                    board_file = 1
                 else:
-                    board_rank = 0
-                    while board_rank < 8:
-                        if current_position[board_rank][board_file] == "b":
-                            movement[0] = [board_rank, board_file]
-                            break
-                        board_rank += 2
-                board_file += 1
+                    board_file = 0
+                while board_file < 8:
+                    if current_position[board_rank][board_file] == "b":
+                        movement[0] = [board_rank, board_file]
+                        break
+                    board_file += 2
+                board_rank += 1
         else:
-            while board_file < 8:
-                if square_type == "white":
-                    board_rank = 1
-                    while board_rank < 8:
-                        if current_position[board_rank][board_file] == "B":
-                            movement[0] = [board_rank, board_file]
-                            break
-                        board_rank += 2
-                else:
-                    board_rank = 0
-                    while board_rank < 8:
-                        if current_position[board_rank][board_file] == "B":
-                            movement[0] = [board_rank, board_file]
-                            break
-                        board_rank += 2
-                board_file += 1
+            while board_rank < 8:
+                while board_file < 8:
+                    if current_position[board_rank][board_file] == "B":
+                        movement[0] = [board_rank, board_file]
+                        break
+                    board_file += 2
+                board_rank += 1
         movement[1] = [convert_to_rank_file(alg_notation[0][-2]), convert_to_rank_file(alg_notation[0][-1])]
     #knight movement
     elif alg_notation[0][0] == "N":
