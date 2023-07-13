@@ -10,6 +10,7 @@ import re
 """
 def pgn_format_parse(pgn_moves):
     moves = []
+    pgn_moves = pgn_moves.replace('\n', ' ')
     split_by_move = re.sub('\d+(\.) ', "", pgn_moves).replace('+', '').replace('#', '').split()
     i = 0
     while i < len(split_by_move):
@@ -19,7 +20,7 @@ def pgn_format_parse(pgn_moves):
             moves.append([split_by_move[i], "w"])
             moves.append([split_by_move[i+1], "b"])
         i += 2
-    return moves
+    return moves[:-1]
 
 
 """Takes in the algebraic notation of a move and returns its current and new position.
@@ -60,6 +61,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                 for j in range(len(current_position[i])):
                     if current_position[i][j] == "K":
                         movement[0] = [i, j]
+        movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #queen movement
     elif alg_notation[0][0] == "Q":
         if turn == "b":
@@ -73,22 +75,13 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                     if current_position[i][j] == "Q":
                         movement[0] = [i, j]
 
-        movement[1] = [alg_notation[0][2], alg_notation[0][3]]
+        movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #Rook Movement
     elif alg_notation[0][0] == "R":
         print(alg_notation)
         #case for when there are two rooks that can move to the same square
         if (len(alg_notation[0]) == 4) and ("x" not in alg_notation[0]):
-            if turn == "b":
-                for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "r":
-                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
-                            break
-            else:
-                for i in range(len(current_position)):
-                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "R":
-                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
-                            break
+            movement[0] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-3])]
             movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
         #case when a rook captures a piece
         elif (len(alg_notation[0]) == 4) and ("x" in alg_notation[0]):
