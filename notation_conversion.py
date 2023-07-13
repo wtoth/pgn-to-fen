@@ -334,27 +334,27 @@ def possible_knight_moves(destination):
     destination_file= convert_to_rank_file(destination[0])
     destination_rank = convert_to_rank_file(destination[1])
     #knight moves forward 2 and left or right 1
-    if destination_file + 2 <= 7:
-        if (destination_rank + 1) <= 7:
-            possible_moves.append([destination_rank + 1, destination_file + 2])
-        if (destination_rank - 1) >= 0:
-            possible_moves.append([destination_rank - 1, destination_file + 2])
+    if destination_rank + 2 <= 7:
+        if (destination_file + 1) <= 7:
+            possible_moves.append([destination_rank + 2, destination_file + 1])
+        if (destination_file - 1) >= 0:
+            possible_moves.append([destination_rank + 2, destination_file - 1])
     #knight moves backward 2 and left or right 1
     if (destination_rank - 2) >= 0:
         if (destination_file + 1) <= 7:
-            possible_moves.append([destination_rank + 1, destination_file - 2])
-        if (destination_file - 1) >= 0:
-            possible_moves.append([destination_rank - 1, destination_file - 2])
-    #knight moves left 2 and forward or backward 1
-    if (destination_file - 2) >= 0:
-        if (destination_rank + 1) <= 7:
             possible_moves.append([destination_rank - 2, destination_file + 1])
-        if (destination_rank - 1) >= 0:
+        if (destination_file - 1) >= 0:
             possible_moves.append([destination_rank - 2, destination_file - 1])
     #knight moves right 2 and forward or backward 1
     if (destination_file + 2) <= 7:
         if (destination_rank + 1) <= 7:
-            possible_moves.append([destination_rank + 2, destination_file + 1])
+            possible_moves.append([destination_rank + 1, destination_file + 2])
         if (destination_rank - 1) >= 0:
-            possible_moves.append([destination_rank + 2,destination_file - 1])
+            possible_moves.append([destination_rank - 1,destination_file + 2])
+    #knight moves left 2 and forward or backward 1
+    if (destination_file - 2) >= 0:
+        if (destination_rank + 1) <= 7:
+            possible_moves.append([destination_rank + 1, destination_file - 2])
+        if (destination_rank - 1) >= 0:
+            possible_moves.append([destination_rank - 1, destination_file - 2])
     return possible_moves
