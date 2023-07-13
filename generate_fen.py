@@ -61,34 +61,34 @@ def generate_next_move(previous_position, next_move):
         piece_to_move = movements[0]
         destination = movements[1]
         piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
-        print(previous_position[piece_to_move[0]][piece_to_move[1]])
         previous_position[piece_to_move[0]][piece_to_move[1]] = " "
         previous_position[destination[0]][destination[1]] = piece_to_move_notation
-    print("updated_position")
-    print(previous_position)
+    #print("updated_position")
+    #for line in reversed(previous_position):
+    #    print(line)
     return [previous_position, next_move]
 
 """Takes in a rank file notation of a board and generates the fen representation.
 
     Args:
-        rank_file_notation (list[list[string]]): multidimensional list representation of the position
+        rank_file_notation (position[list of strings], next_move): multidimensional list representation of the position
 
     Returns:
         fen (string): fen representation of the updated position
 """
 def generate_fen_from_rank_file(rank_file_notation):
     fen = ""
-    #print(rank_file_notation[0])
     for i in range(len(rank_file_notation[0])):
-        #print(rank_file_notation[0][i])
+        print(fen)
+        file_notation = ""
+        blank_count = 0
         for j in range(len(rank_file_notation[0][i])):
-            file_notation = ""
-            blank_count = 0
             if rank_file_notation[0][i][j] == " ":
                 blank_count += 1
             else:
                 if blank_count != 0:
                     file_notation += (str(blank_count) + rank_file_notation[0][i][j])
+                    blank_count = 0
                 else:
                     #print(rank_file_notation[0][i][j])
                     file_notation += rank_file_notation[0][i][j]
