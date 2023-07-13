@@ -34,20 +34,36 @@ def generate_first_position(next_move):
         updated_position (string): fen representation of the updated position
 """
 def generate_next_move(previous_position, next_move):
-    movements = algebraic_notation_to_rank_file(next_move, previous_position, next_move[1])
-    piece_to_move = movements[0]
-    destination = movements[1]
-    print("piece_to_move")
-    print(piece_to_move)
-    print("destination")
-    print(destination)
-    print("previous_position")
-    print(previous_position)
-    piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
-    print(piece_to_move_notation)
-    print(previous_position[piece_to_move[0]][piece_to_move[1]])
-    previous_position[piece_to_move[0]][piece_to_move[1]] = " "
-    previous_position[destination[0]][destination[1]] = piece_to_move_notation
+    if next_move[0] == "O-O":
+        if next_move[1] == "b":
+            previous_position[7][4] = " "
+            previous_position[7][5] = "r"
+            previous_position[7][6] = "k"
+            previous_position[7][7] = " "
+        else:
+            previous_position[0][4] = " "
+            previous_position[0][5] = "R"
+            previous_position[0][6] = "K"
+            previous_position[0][7] = " "
+    elif next_move[0] == "O-O-O":
+        if next_move[1] == "b":
+            previous_position[7][4] = " "
+            previous_position[7][3] = "r"
+            previous_position[7][2] = "k"
+            previous_position[7][0] = " "
+        else:
+            previous_position[0][4] = " "
+            previous_position[0][3] = "R"
+            previous_position[0][2] = "K"
+            previous_position[0][0] = " "
+    else:   
+        movements = algebraic_notation_to_rank_file(next_move, previous_position, next_move[1])
+        piece_to_move = movements[0]
+        destination = movements[1]
+        piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
+        print(previous_position[piece_to_move[0]][piece_to_move[1]])
+        previous_position[piece_to_move[0]][piece_to_move[1]] = " "
+        previous_position[destination[0]][destination[1]] = piece_to_move_notation
     print("updated_position")
     print(previous_position)
     return [previous_position, next_move]
