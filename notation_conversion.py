@@ -20,6 +20,7 @@ def pgn_format_parse(pgn_moves):
             moves.append([split_by_move[i], "w"])
             moves.append([split_by_move[i+1], "b"])
         i += 2
+    #print(moves)
     return moves[:-1]
 
 
@@ -34,9 +35,9 @@ def pgn_format_parse(pgn_moves):
 """
 def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     
-    print(alg_notation)
+    #print(alg_notation)
     #print(current_position)
-    print("flag")
+    #print("flag")
     #print(turn)
     #movement of form [current_position[rank, file], new_position[rank, file]]
     movement = [None,None]
@@ -110,12 +111,12 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                             movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                             break
                         elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "r":
-                            movement[0] = [i, j]
+                            movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
                             break
             else:
                 for i in range(len(current_position)):
                         if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "R":
-                            movement[0] = [i, j]
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                             break
                         elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "R":
                             movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
@@ -158,13 +159,13 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                     if current_position[square[0]][square[1]] == "b":
                         movement[0] = square
                         break
-        movement[1] = [convert_to_rank_file(alg_notation[0][-2]), convert_to_rank_file(alg_notation[0][-1])]
+        movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #knight movement
     elif alg_notation[0][0] == "N":
         #standard knight movement where there is only one knight that can move to the square
         if (len(alg_notation[0]) == 3):
             possible_moves = possible_knight_moves(alg_notation[0][-2:])
-            print(possible_moves)
+            #print(possible_moves)
             if turn == "b":
                     for move in possible_moves:
                         if current_position[move[0]][move[1]] == "n":
@@ -244,7 +245,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                 if turn == "b":
                     for i in range(len(current_position)):
                         if current_position[convert_to_rank_file(alg_notation[0][1])][i] == "n":
-                            movement[0] = [convert_to_rank_file(alg_notation[0][1]), j]
+                            movement[0] = [convert_to_rank_file(alg_notation[0][1]), i]
                             break
                 else:
                     for i in range(len(current_position)):
@@ -253,7 +254,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                             break
         else:
             print("Error: Invalid Algebraic Notation")
-        movement[1] = [convert_to_rank_file(alg_notation[0][-2]), convert_to_rank_file(alg_notation[0][-1])]
+        movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #pawn movement
     else:
         if turn == "b":
