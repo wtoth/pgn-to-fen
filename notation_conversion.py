@@ -135,30 +135,36 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         square_type = white_or_black_square(alg_notation[0][-2:])
         
         board_rank = 0
-        if turn == "b":
-            while board_rank < 8:
-                if square_type == "white":
-                    board_file = 1
-                else:
-                    board_file = 0
-                while board_file < 8:
-                    if current_position[board_rank][board_file] == "b":
-                        movement[0] = [board_rank, board_file]
+        white_squares = [[0, 1], [0, 3], [0, 5], [0, 7], [1, 0], [1, 2], [1, 4], [1, 6], [2, 1], [2, 3], [2, 5], [2, 7], [3, 0], [3, 2], [3, 4], [3, 6], [4, 1], [4, 3], [4, 5], [4, 7], [5, 0], [5, 2], [5, 4], [5, 6], [6, 1], [6, 3], [6, 5], [6, 7], [7, 0], [7, 2], [7, 4], [7, 6]]
+        black_squares = [[0, 0], [0, 2], [0, 4], [0, 6],
+                 [1, 1], [1, 3], [1, 5], [1, 7],
+                 [2, 0], [2, 2], [2, 4], [2, 6],
+                 [3, 1], [3, 3], [3, 5], [3, 7],
+                 [4, 0], [4, 2], [4, 4], [4, 6],
+                 [5, 1], [5, 3], [5, 5], [5, 7],
+                 [6, 0], [6, 2], [6, 4], [6, 6],
+                 [7, 1], [7, 3], [7, 5], [7, 7]]
+        
+        if square_type == "white":
+            for square in white_squares:
+                if turn == "w":
+                    if current_position[square[0]][square[1]] == "B":
+                        movement[0] = square
                         break
-                    board_file += 2
-                board_rank += 1
+                else:
+                    if current_position[square[0]][square[1]] == "b":
+                        movement[0] = square
+                        break
         else:
-            while board_rank < 8:
-                if square_type == "white":
-                    board_file = 1
-                else:
-                    board_file = 0
-                while board_file < 8:
-                    if current_position[board_rank][board_file] == "B":
-                        movement[0] = [board_rank, board_file]
+            for square in black_squares:
+                if turn == "w":
+                    if current_position[square[0]][square[1]] == "B":
+                        movement[0] = square
                         break
-                    board_file += 2
-                board_rank += 1
+                else:
+                    if current_position[square[0]][square[1]] == "b":
+                        movement[0] = square
+                        break
         movement[1] = [convert_to_rank_file(alg_notation[0][-2]), convert_to_rank_file(alg_notation[0][-1])]
     #knight movement
     elif alg_notation[0][0] == "N":
