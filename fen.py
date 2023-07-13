@@ -18,12 +18,12 @@ class FEN:
         #print(parsed_pgn)
         first_move = True
         self.rank_file.append(generate_first_position(parsed_pgn[1]))
-        self.game.append(generate_fen_from_rank_file(self.rank_file[-1]))
+        self.game.append([generate_fen_from_rank_file(self.rank_file[-1]), parsed_pgn[0]])
 
         for i in range(len(parsed_pgn)):
             #print(parsed_pgn[i])
             self.rank_file.append(generate_next_move(self.rank_file[-1][0], parsed_pgn[i]))
             if i + 1 < len(parsed_pgn):
-                self.game.append([generate_fen_from_rank_file(self.rank_file[-1][0]), parsed_pgn[i+1]])
+                self.game.append([generate_fen_from_rank_file(self.rank_file[-1]), parsed_pgn[i+1]])
             else:
-                self.game.append([generate_fen_from_rank_file(self.rank_file[-1][0]), None])
+                self.game.append([generate_fen_from_rank_file(self.rank_file[-1]), None])
