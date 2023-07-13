@@ -10,7 +10,7 @@ import re
 """
 def pgn_format_parse(pgn_moves):
     moves = []
-    split_by_move = re.sub('\d+(\.) ', "", pgn_moves).split()
+    split_by_move = re.sub('\d+(\.) ', "", pgn_moves).replace('+', '').replace('#', '').split()
     i = 0
     while i < len(split_by_move):
         if i+2 >= len(split_by_move):
