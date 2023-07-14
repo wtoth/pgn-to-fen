@@ -20,8 +20,7 @@ def pgn_format_parse(pgn_moves):
             moves.append([split_by_move[i], "w"])
             moves.append([split_by_move[i+1], "b"])
         i += 2
-    #print(moves)
-    return moves[:-1]
+    return moves
 
 
 """Takes in the algebraic notation of a move and returns its current and new position.
@@ -79,7 +78,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #Rook Movement
     elif alg_notation[0][0] == "R":
-        print(alg_notation)
+        #print(alg_notation)
         #case for when there are two rooks that can move to the same square
         if (len(alg_notation[0]) == 4) and ("x" not in alg_notation[0]):
             movement[0] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-3])]
@@ -310,7 +309,7 @@ def convert_to_rank_file(position):
     
 #determines whether a square is black or white
 def white_or_black_square(position):
-    print(position)
+    #print(position)
     if position[0] == "a" or position[0] == "c" or position[0] == "e" or position[0] == "g":
         if position[1] == "1" or position[1] == "3" or position[1] == "5" or position[1] == "7":
             return "black"
