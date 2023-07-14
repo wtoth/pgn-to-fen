@@ -78,21 +78,29 @@ def generate_next_move(previous_position, next_move):
 """
 def generate_fen_from_rank_file(rank_file_notation):
     fen = ""
-    for i in range(len(rank_file_notation[0])):
+    rank = 7
+    while rank >= 0:
         print(fen)
         file_notation = ""
         blank_count = 0
-        for j in range(len(rank_file_notation[0][i])):
-            if rank_file_notation[0][i][j] == " ":
+        for j in range(len(rank_file_notation[0][rank])):
+            if rank_file_notation[0][rank][j] == " ":
                 blank_count += 1
             else:
                 if blank_count != 0:
-                    file_notation += (str(blank_count) + rank_file_notation[0][i][j])
+                    file_notation += (str(blank_count) + rank_file_notation[0][rank][j])
                     blank_count = 0
                 else:
                     #print(rank_file_notation[0][i][j])
-                    file_notation += rank_file_notation[0][i][j]
+                    file_notation += rank_file_notation[0][rank][j]
             if blank_count == 8:
                 file_notation = "8"
-        fen += (file_notation + "/")
+                blank_count = 0
+        if blank_count != 0:
+            file_notation += str(blank_count)
+        if rank == 0:
+            fen += file_notation
+        else:
+            fen += (file_notation + "/")
+        rank -= 1
     return fen
