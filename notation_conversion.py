@@ -36,7 +36,7 @@ def pgn_format_parse(pgn_moves):
         movement (list[current_position, new_position]): give coordinates of the starting position and the new position
 """
 def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
-    print(alg_notation)
+    #print(alg_notation)
     #print(current_position)
     #print("flag")
     #print(turn)
@@ -81,6 +81,8 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     #Rook Movement
     elif alg_notation[0][0] == "R":
         #print(alg_notation)
+        if alg_notation[0] == "Rxe5":
+            print("flag")
         #case for when there are two rooks that can move to the same square
         if (len(alg_notation[0]) == 4) and ("x" not in alg_notation[0]):
             movement[0] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-3])]
@@ -381,7 +383,8 @@ def rook_path_clear(current_board, starting_position, destination):
     #rooks on the same file
     elif starting_position[1] == destination[1]:
         if starting_position[0] < destination[0]:
-            for i in range(starting_position[1]+1, destination[1]):
+            for i in range(starting_position[0]+1, destination[0]):
+                print(i)
                 if current_board[i][starting_position[1]] != " ":
                     return False
         else:
