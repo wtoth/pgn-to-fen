@@ -34,6 +34,8 @@ def generate_first_position(next_move):
         updated_position (string): fen representation of the updated position
 """
 def generate_next_move(previous_position, next_move):
+    print("next_move")
+    print(next_move)
     if next_move[0] == "O-O":
         if next_move[1] == "b":
             previous_position[7][4] = " "
@@ -56,6 +58,18 @@ def generate_next_move(previous_position, next_move):
             previous_position[0][3] = "R"
             previous_position[0][2] = "K"
             previous_position[0][0] = " "
+    #Promotion Case
+    elif "=" in next_move[0]:
+        print("FLAGGG")
+        new_piece = next_move[0][-1]
+        if next_move[1] == "b":
+            new_piece = new_piece.lower()
+        next_move[0] = next_move[0][:-2]
+        movements = algebraic_notation_to_rank_file(next_move, previous_position, next_move[1])
+        piece_to_move = movements[0]
+        destination = movements[1]
+        previous_position[piece_to_move[0]][piece_to_move[1]] = " "
+        previous_position[destination[0]][destination[1]] = new_piece
     else:   
         movements = algebraic_notation_to_rank_file(next_move, previous_position, next_move[1])
         piece_to_move = movements[0]
@@ -80,7 +94,7 @@ def generate_fen_from_rank_file(rank_file_notation):
     fen = ""
     rank = 7
     while rank >= 0:
-        print(fen)
+        #print(fen)
         file_notation = ""
         blank_count = 0
         for j in range(len(rank_file_notation[0][rank])):

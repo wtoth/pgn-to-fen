@@ -11,7 +11,8 @@ import re
 def pgn_format_parse(pgn_moves):
     moves = []
     pgn_moves = pgn_moves.replace('\n', ' ')
-    split_by_move = re.sub('\d+(\.) ', "", pgn_moves).replace('+', '').replace('#', '').split()
+    split_by_move = re.sub('\d+(\.) ', "", pgn_moves)
+    split_by_move = re.sub('\d+(\.)', "", split_by_move).replace('+', '').replace('#', '').split()
     i = 0
     while i < len(split_by_move):
         if i+2 >= len(split_by_move):
