@@ -81,11 +81,24 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     #Rook Movement
     elif alg_notation[0][0] == "R":
         #print(alg_notation)
-        if alg_notation[0] == "Rxe5":
-            print("flag")
         #case for when there are two rooks that can move to the same square
         if (len(alg_notation[0]) == 4) and ("x" not in alg_notation[0]):
-            movement[0] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-3])]
+            #Case where the rook specifies the rank (ex: R5f4)
+            if alg_notation[0][-3].isdigit():
+                movement[0] = [convert_to_rank_file(alg_notation[0][-3]), convert_to_rank_file(alg_notation[0][-2])]
+            #case where the rook specifies the file (ex: Rff6) 
+            else:
+                if turn == "b":
+                    for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-3])] == "r":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-3])]
+                            break
+                else:
+                    for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-3])] == "R":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-3])]
+                            break
+
             movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
         #case when a rook captures a piece
         elif (len(alg_notation[0]) == 4) and ("x" in alg_notation[0]):
@@ -367,9 +380,9 @@ def possible_knight_moves(destination):
     return possible_moves
 
 def rook_path_clear(current_board, starting_position, destination):
-    print("rook path clear")
-    print(starting_position)
-    print(destination)
+    #print("rook path clear")
+    #print(starting_position)
+    #print(destination)
     #rooks on the same rank
     if starting_position[0] == destination[0]:
         if starting_position[1] < destination[1]:
@@ -384,7 +397,6 @@ def rook_path_clear(current_board, starting_position, destination):
     elif starting_position[1] == destination[1]:
         if starting_position[0] < destination[0]:
             for i in range(starting_position[0]+1, destination[0]):
-                print(i)
                 if current_board[i][starting_position[1]] != " ":
                     return False
         else:
