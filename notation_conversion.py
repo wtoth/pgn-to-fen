@@ -126,11 +126,18 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         #
         elif len(alg_notation[0]) == 5:
             #ex: R8xd5
-            if alg_notation[0][2].isdigit():
+            if alg_notation[0][1].isdigit():
                 movement[0] = [convert_to_rank_file(alg_notation[0][-4]), convert_to_rank_file(alg_notation[0][-2])]
             #ex: Rbxd6
             else:
-                movement[0] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-4])]
+                for i in range(len(current_position)):
+                    if turn == "b":
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-4])] == "r":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-4])]
+                    else:
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-4])] == "R":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-4])]    
+
             movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
         #case when a rook moves to a square that is not occupied
         else:
