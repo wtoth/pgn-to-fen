@@ -107,21 +107,25 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                         if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "r":
                             if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                 movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
-                                break
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
                         elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "r":
                             if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                 movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
-                                break
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
             else:
                 for i in range(len(current_position)):
                         if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "R":
                             if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                 movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
-                                break
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
                         elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "R":
                             if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                 movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
-                                break
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
             movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
         #
         elif len(alg_notation[0]) == 5:
@@ -212,18 +216,22 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                     for move in possible_moves:
                         if current_position[move[0]][move[1]] == "n":
                             movement[0] = [move[0], move[1]]
-                            break
+                            if not reveals_checkmate(current_position, movement[0], turn):
+                                break
                         elif current_position[move[0]][move[1]] == "n":
                             movement[0] = [move[0], move[1]]
-                            break
+                            if not reveals_checkmate(current_position, movement[0], turn):
+                                break
             else:
                 for move in possible_moves:
                     if current_position[move[0]][move[1]] == "N":
                         movement[0] = [move[0], move[1]]
-                        break
+                        if not reveals_checkmate(current_position, movement[0], turn):
+                                break
                     elif current_position[move[0]][move[1]] == "N":
                         movement[0] = [move[0], move[1]]
-                        break
+                        if not reveals_checkmate(current_position, movement[0], turn):
+                                break
         elif (len(alg_notation[0]) == 4):
             #case where a knight captures a piece and only that knight can capture said piece
             if (alg_notation[0][1] == "x") or (alg_notation[0][1] == "X"):
@@ -232,18 +240,22 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                     for move in possible_moves:
                         if current_position[move[0]][move[1]] == "n":
                             movement[0] = [move[0], move[1]]
-                            break
+                            if not reveals_checkmate(current_position, movement[0], turn):
+                                break
                         elif current_position[move[0]][move[1]] == "n":
                             movement[0] = [move[0], move[1]]
-                            break
+                            if not reveals_checkmate(current_position, movement[0], turn):
+                                break
                 else:
                     for move in possible_moves:
                         if current_position[move[0]][move[1]] == "N":
                             movement[0] = [move[0], move[1]]
-                            break
+                            if not reveals_checkmate(current_position, movement[0], turn):
+                                break
                         elif current_position[move[0]][move[1]] == "N":
                             movement[0] = [move[0], move[1]]
-                            break
+                            if not reveals_checkmate(current_position, movement[0], turn):
+                                break
             #case where there are two knights that can move to the same square
             else:
                 if alg_notation[0][1].isdigit():
@@ -338,7 +350,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
 
     return movement
 
-
 #converts algebraic notation down to rank and file notation
 def convert_to_rank_file(position):
     if isinstance(position, int) or (position.isnumeric()):
@@ -431,3 +442,178 @@ def rook_path_clear(current_board, starting_position, destination):
                 if current_board[i][starting_position[1]] != " ":
                     return False
     return True
+
+#check if a move reveals check on the king
+def reveals_checkmate(current_board, moving_piece, turn):
+    piece_type = current_board[moving_piece[0]][moving_piece[1]]
+    #calculate where the king is located
+    king_position = [None, None]
+    for i in range(len(current_board)):
+        for j in range(len(current_board[i])):
+            if turn == "b":
+                if current_board[i][j] == "k":
+                    king_position = [i, j]
+            else:
+                if current_board[i][j] == "K":
+                    king_position = [i, j]
+    #if king is on the same rank as the starting position investigate
+    if moving_piece[0] == king_position[0]:
+        if moving_piece[1] > king_position[1]:
+            for i in range(moving_piece[1]+1, 8):
+                if current_board[moving_piece[0]][i] != " ":
+                    if turn == "b":
+                        if current_board[moving_piece[0]][i] == "R":
+                            return True
+                        elif current_board[moving_piece[0]][i]== "Q":
+                            return True
+                        else:
+                            return False
+                    else:
+                        if current_board[moving_piece[0]][i] == "r":
+                            return True
+                        elif current_board[moving_piece[0]][i] == "q":
+                            return True
+                        else:
+                            return False
+        else:
+            for i in range(moving_piece[1]-1, 0, -1):
+                if current_board[moving_piece[0]][i] != " ":
+                    if turn == "b":
+                        if current_board[moving_piece[0]][i] == "R":
+                            return True
+                        elif current_board[moving_piece[0]][i] == "Q":
+                            return True
+                        else:
+                            return False
+                    else:
+                        if current_board[moving_piece[0]][i] == "r":
+                            return True
+                        elif current_board[moving_piece[0]][i] == "q":
+                            return True
+                        else:
+                            return False
+    #if king is on the fame file as the starting position investigate
+    elif moving_piece[1] == king_position[1]:
+        if moving_piece[0] > king_position[0]:
+            for i in range(moving_piece[1]+1, 8):
+                if current_board[i][moving_piece[1]] != " ":
+                    if turn == "b":
+                        if current_board[i][moving_piece[1]] == "R":
+                            return True
+                        elif current_board[i][moving_piece[1]]== "Q":
+                            return True
+                        else:
+                            return False
+                    else:
+                        if current_board[i][moving_piece[1]] == "r":
+                            return True
+                        elif current_board[i][moving_piece[1]] == "q":
+                            return True
+                        else:
+                            return False
+        else:
+            for i in range(moving_piece[1]-1, 0, -1):
+                if current_board[i][moving_piece[1]] != " ":
+                    if turn == "b":
+                        if current_board[i][moving_piece[1]] == "R":
+                            return True
+                        elif current_board[i][moving_piece[1]] == "Q":
+                            return True
+                        else:
+                            return False
+                    else:
+                        if current_board[i][moving_piece[1]] == "r":
+                            return True
+                        elif current_board[i][moving_piece[1]]== "q":
+                            return True
+                        else:
+                            return False
+    #if king is on the same diagonal as the starting position investigate
+    elif abs(moving_piece[0] - king_position[0]) == abs(moving_piece[1] - king_position[1]):
+        if moving_piece[0] > king_position[0]:
+            if moving_piece[1] > king_position[1]:
+                i = moving_piece[0] + 1
+                j = moving_piece[1] + 1
+                while (i < 8) and (j < 8):
+                    if current_board[i][j] != " ":
+                        if turn == "b":
+                            if current_board[i][j] == "B":
+                                return True
+                            elif current_board[i][j] == "Q":
+                                return True
+                            else:
+                                return False
+                        else:
+                            if current_board[i][j] == "b":
+                                return True
+                            elif current_board[i][j] == "q":
+                                return True
+                            else:
+                                return False
+                    i += 1
+                    j += 1
+            else:
+                i = moving_piece[0] + 1
+                j = moving_piece[1] - 1
+                while (i < 8) and (j >= 0):
+                    if current_board[i][j] != " ":
+                        if turn == "b":
+                            if current_board[i][j] == "B":
+                                return True
+                            elif current_board[i][j] == "Q":
+                                return True
+                            else:
+                                return False
+                        else:
+                            if current_board[i][j] == "b":
+                                return True
+                            elif current_board[i][j] == "q":
+                                return True
+                            else:
+                                return False
+                    i += 1
+                    j -= 1
+        else:
+            if moving_piece[1] > king_position[1]:
+                i = moving_piece[0] - 1
+                j = moving_piece[1] + 1
+                while (i >= 0) and (j < 8):
+                    if current_board[i][j] != " ":
+                        if turn == "b":
+                            if current_board[i][j] == "B":
+                                return True
+                            elif current_board[i][j] == "Q":
+                                return True
+                            else:
+                                return False
+                        else:
+                            if current_board[i][j] == "b":
+                                return True
+                            elif current_board[i][j] == "q":
+                                return True
+                            else:
+                                return False
+                    i -= 1
+                    j += 1
+            else:
+                i = moving_piece[0] - 1
+                j = moving_piece[1] - 1
+                while (i >= 0) and (j >= 0):
+                    if current_board[i][j] != " ":
+                        if turn == "b":
+                            if current_board[i][j] == "B":
+                                return True
+                            elif current_board[i][j] == "Q":
+                                return True
+                            else:
+                                return False
+                        else:
+                            if current_board[i][j] == "b":
+                                return True
+                            elif current_board[i][j] == "q":
+                                return True
+                            else:
+                                return False
+                    i -= 1
+                    j -= 1
+    return False
