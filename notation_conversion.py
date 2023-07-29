@@ -341,13 +341,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                 else:
                     movement[0] = [convert_to_rank_file(int(alg_notation[0][1]) - 1), convert_to_rank_file(alg_notation[0][0])]
             elif len(alg_notation[0]) == 4:
-                print(alg_notation)
-                for file in reversed(current_position):
-                    print(file)
-                print("rank")
-                print(convert_to_rank_file(int(alg_notation[0][-1])-1))
-                print("file")
-                print(convert_to_rank_file(alg_notation[0][-2]))
                 if current_position[convert_to_rank_file(int(alg_notation[0][-1]))][convert_to_rank_file(alg_notation[0][-2])] == " ":
                     movement.append("en passant")
                 movement[0] = [convert_to_rank_file(int(alg_notation[0][3]) - 1), convert_to_rank_file(alg_notation[0][0])]
@@ -497,7 +490,7 @@ def reveals_checkmate(current_board, moving_piece, turn):
     #if king is on the fame file as the starting position investigate
     elif moving_piece[1] == king_position[1]:
         if moving_piece[0] > king_position[0]:
-            for i in range(moving_piece[1]+1, 8):
+            for i in range(moving_piece[0]+1, 8):
                 if current_board[i][moving_piece[1]] != " ":
                     if turn == "b":
                         if current_board[i][moving_piece[1]] == "R":
@@ -514,7 +507,7 @@ def reveals_checkmate(current_board, moving_piece, turn):
                         else:
                             return False
         else:
-            for i in range(moving_piece[1]-1, 0, -1):
+            for i in range(moving_piece[0]-1, 0, -1):
                 if current_board[i][moving_piece[1]] != " ":
                     if turn == "b":
                         if current_board[i][moving_piece[1]] == "R":
