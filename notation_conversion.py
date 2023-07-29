@@ -109,7 +109,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                                 movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                                 if not reveals_checkmate(current_position, movement[0], turn):
                                     break
-                        elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "r":
+                        if current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "r":
                             if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                 movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
                                 if not reveals_checkmate(current_position, movement[0], turn):
@@ -121,7 +121,7 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
                                 movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
                                 if not reveals_checkmate(current_position, movement[0], turn):
                                     break
-                        elif current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "R":
+                        if current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "R":
                             if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                 movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
                                 if not reveals_checkmate(current_position, movement[0], turn):
