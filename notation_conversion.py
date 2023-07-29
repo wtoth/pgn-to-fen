@@ -66,17 +66,121 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #queen movement
     elif alg_notation[0][0] == "Q":
-        if turn == "b":
-            for i in range(len(current_position)):
-                for j in range(len(current_position[i])):
-                    if current_position[i][j] == "q":
-                        movement[0] = [i, j]
-        else:
-            for i in range(len(current_position)):
-                for j in range(len(current_position[i])):
-                    if current_position[i][j] == "Q":
-                        movement[0] = [i, j]
+        #case for when there are two rooks that can move to the same square
+        if (len(alg_notation[0]) == 4) and ("x" not in alg_notation[0]):
+            #Case where the rook specifies the rank (ex: R5f4)
+            if alg_notation[0][-3].isdigit():
+                movement[0] = [convert_to_rank_file(alg_notation[0][-3]), convert_to_rank_file(alg_notation[0][-2])]
+            #case where the rook specifies the file (ex: Rff6) 
+            else:
+                if turn == "b":
+                    for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-3])] == "q":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-3])]
+                            break
+                else:
+                    for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-3])] == "Q":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-3])]
+                            break
 
+            movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
+        #case when a Queen captures a piece
+        elif (len(alg_notation[0]) == 4) and ("x" in alg_notation[0]):
+            if turn == "b":
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "q":
+                            if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
+                        if current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "q":
+                            if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
+            else:
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "Q":
+                            if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
+                        if current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "Q":
+                            if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
+            movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
+        #
+        elif len(alg_notation[0]) == 5:
+            #ex: R8xd5
+            if alg_notation[0][1].isdigit():
+                movement[0] = [convert_to_rank_file(alg_notation[0][-4]), convert_to_rank_file(alg_notation[0][-2])]
+            #ex: Rbxd6
+            else:
+                for i in range(len(current_position)):
+                    if turn == "b":
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-4])] == "q":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-4])]
+                    else:
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-4])] == "Q":
+                            movement[0] = [i, convert_to_rank_file(alg_notation[0][-4])]    
+
+            movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
+        else:
+            if turn == "b":
+                    for i in range(len(current_position)):
+                            #print(current_position[i][convert_to_rank_file(alg_notation[0][-2])])
+                            #print(current_position[convert_to_rank_file(alg_notation[0][-1])][i])
+                            if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "q":
+                                if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                    movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
+                                    if not reveals_checkmate(current_position, movement[0], turn):
+                                        break
+                            if current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "q":
+                                if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                    movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
+                                    if not reveals_checkmate(current_position, movement[0], turn):
+                                        break
+            else:
+                for i in range(len(current_position)):
+                        if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "Q":
+                            if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
+                        if current_position[convert_to_rank_file(alg_notation[0][-1])][i] == "Q":
+                            if rook_path_clear(current_position, [convert_to_rank_file(alg_notation[0][-1]), i], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
+                                movement[0] = [convert_to_rank_file(alg_notation[0][-1]), i]
+                                if not reveals_checkmate(current_position, movement[0], turn):
+                                    break
+
+        if movement[0] == None:
+                    board_rank = 0
+                    white_squares = [[0, 1], [0, 3], [0, 5], [0, 7], [1, 0], [1, 2], [1, 4], [1, 6], [2, 1], [2, 3], [2, 5], [2, 7], [3, 0], [3, 2], [3, 4], [3, 6], [4, 1], [4, 3], [4, 5], [4, 7], [5, 0], [5, 2], [5, 4], [5, 6], [6, 1], [6, 3], [6, 5], [6, 7], [7, 0], [7, 2], [7, 4], [7, 6]]
+                    black_squares = [[0, 0], [0, 2], [0, 4], [0, 6],[1, 1], [1, 3], [1, 5], [1, 7],[2, 0], [2, 2], [2, 4], [2, 6],[3, 1], [3, 3], [3, 5], [3, 7],[4, 0], [4, 2], [4, 4], [4, 6],[5, 1], [5, 3], [5, 5], [5, 7],[6, 0], [6, 2], [6, 4], [6, 6],[7, 1], [7, 3], [7, 5], [7, 7]]
+                    square_type = white_or_black_square(alg_notation[0][-2:])
+                    if square_type == "white":
+                        for square in white_squares:
+                            if turn == "w":
+                                if current_position[square[0]][square[1]] == "Q":
+                                    movement[0] = square
+                                    break
+                            else:
+                                if current_position[square[0]][square[1]] == "q":
+                                    movement[0] = square
+                                    break
+                    else:
+                        for square in black_squares:
+                            if turn == "w":
+                                if current_position[square[0]][square[1]] == "Q":
+                                    movement[0] = square
+                                    break
+                            else:
+                                if current_position[square[0]][square[1]] == "q":
+                                    movement[0] = square
+                                    break
         movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #Rook Movement
     elif alg_notation[0][0] == "R":
