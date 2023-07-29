@@ -471,7 +471,7 @@ def reveals_checkmate(current_board, moving_piece, turn):
                         else:
                             return False
         else:
-            for i in range(moving_piece[1]-1, 0, -1):
+            for i in range(moving_piece[1]-1, -1, -1):
                 if current_board[moving_piece[0]][i] != " ":
                     if turn == "b":
                         if current_board[moving_piece[0]][i] == "R":
@@ -507,7 +507,7 @@ def reveals_checkmate(current_board, moving_piece, turn):
                         else:
                             return False
         else:
-            for i in range(moving_piece[0]-1, 0, -1):
+            for i in range(moving_piece[0]-1, -1, -1):
                 if current_board[i][moving_piece[1]] != " ":
                     if turn == "b":
                         if current_board[i][moving_piece[1]] == "R":
