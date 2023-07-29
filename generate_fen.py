@@ -34,8 +34,6 @@ def generate_first_position(next_move):
         updated_position (string): fen representation of the updated position
 """
 def generate_next_move(previous_position, next_move):
-    #print("next_move")
-    print(next_move)
     if next_move[0] == "O-O":
         if next_move[1] == "b":
             previous_position[7][4] = " "
@@ -60,7 +58,6 @@ def generate_next_move(previous_position, next_move):
             previous_position[0][0] = " "
     #Promotion Case
     elif "=" in next_move[0]:
-        #print("FLAGGG")
         new_piece = next_move[0][-1]
         if next_move[1] == "b":
             new_piece = new_piece.lower()
@@ -83,9 +80,6 @@ def generate_next_move(previous_position, next_move):
             piece_to_move_notation = previous_position[piece_to_move[0]][piece_to_move[1]]
             previous_position[piece_to_move[0]][piece_to_move[1]] = " "
             previous_position[destination[0]][destination[1]] = piece_to_move_notation
-    #print("updated_position")
-    #for line in reversed(previous_position):
-    #    print(line)
     return [previous_position, next_move]
 
 """Takes in a rank file notation of a board and generates the fen representation.
@@ -100,7 +94,6 @@ def generate_fen_from_rank_file(rank_file_notation):
     fen = ""
     rank = 7
     while rank >= 0:
-        #print(fen)
         file_notation = ""
         blank_count = 0
         for j in range(len(rank_file_notation[0][rank])):
@@ -111,7 +104,6 @@ def generate_fen_from_rank_file(rank_file_notation):
                     file_notation += (str(blank_count) + rank_file_notation[0][rank][j])
                     blank_count = 0
                 else:
-                    #print(rank_file_notation[0][i][j])
                     file_notation += rank_file_notation[0][rank][j]
             if blank_count == 8:
                 file_notation = "8"

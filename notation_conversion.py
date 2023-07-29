@@ -36,10 +36,6 @@ def pgn_format_parse(pgn_moves):
         movement (list[current_position, new_position]): give coordinates of the starting position and the new position
 """
 def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
-    #print(alg_notation)
-    #print(current_position)
-    #print("flag")
-    #print(turn)
     #movement of form [current_position[rank, file], new_position[rank, file]]
     movement = [None,None]
     #current_position = current_position[0]
@@ -51,7 +47,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
     #process each move individually to determine the starting position
     #black is lowercase white is uppercase
     #king movement
-    #print(alg_notation[0])
     if alg_notation[0][0] == "K":
         if turn == "b":
             for i in range(len(current_position)):
@@ -131,8 +126,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         else:
             if turn == "b":
                     for i in range(len(current_position)):
-                            #print(current_position[i][convert_to_rank_file(alg_notation[0][-2])])
-                            #print(current_position[convert_to_rank_file(alg_notation[0][-1])][i])
                             if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "q":
                                 if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                     movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
@@ -184,7 +177,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         movement[1] = [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]
     #Rook Movement
     elif alg_notation[0][0] == "R":
-        #print(alg_notation)
         #case for when there are two rooks that can move to the same square
         if (len(alg_notation[0]) == 4) and ("x" not in alg_notation[0]):
             #Case where the rook specifies the rank (ex: R5f4)
@@ -251,8 +243,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         else:
             if turn == "b":
                 for i in range(len(current_position)):
-                        #print(current_position[i][convert_to_rank_file(alg_notation[0][-2])])
-                        #print(current_position[convert_to_rank_file(alg_notation[0][-1])][i])
                         if current_position[i][convert_to_rank_file(alg_notation[0][-2])] == "r":
                             if rook_path_clear(current_position, [i, convert_to_rank_file(alg_notation[0][-2])], [convert_to_rank_file(alg_notation[0][-1]), convert_to_rank_file(alg_notation[0][-2])]):
                                 movement[0] = [i, convert_to_rank_file(alg_notation[0][-2])]
@@ -319,7 +309,6 @@ def algebraic_notation_to_rank_file(alg_notation, current_position, turn):
         #standard knight movement where there is only one knight that can move to the square
         if (len(alg_notation[0]) == 3):
             possible_moves = possible_knight_moves(alg_notation[0][-2:])
-            #print(possible_moves)
             if turn == "b":
                     for move in possible_moves:
                         if current_position[move[0]][move[1]] == "n":
@@ -476,7 +465,6 @@ def convert_to_rank_file(position):
     
 #determines whether a square is black or white
 def white_or_black_square(position):
-    #print(position)
     if position[0] == "a" or position[0] == "c" or position[0] == "e" or position[0] == "g":
         if position[1] == "1" or position[1] == "3" or position[1] == "5" or position[1] == "7":
             return "black"
