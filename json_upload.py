@@ -15,6 +15,6 @@ def create_json(path, fen):
 def metadata_that_exists(metadata):
     shortened_metadata = {}
     for key, val in metadata.items():
-        if val is not None:
+        if val is not (None or ""):
             shortened_metadata[key] = val
     return shortened_metadata
